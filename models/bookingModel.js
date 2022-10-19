@@ -25,6 +25,7 @@ const bookingSchema = new mongoose.Schema({
   },
 });
 
+//! Populate user and tour fields of booking document ->
 bookingSchema.pre(/^find/, function (next) {
   this.populate('user', 'name email').populate('tour', 'name');
   next();

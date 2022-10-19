@@ -206,7 +206,7 @@ tourSchema.index({ startLocation: '2dsphere' });
 tourSchema.pre(/^find/, function (next) {
   //! this here points toward the QUERY OBJECT so we can chain methods here.
   //~ Even the secretTour is private but we can still access it use get tour api because in get tour controller we use findById method which is different from find hence this middleware dosent get executed. TO RUN THIS MIDDLEWARE FOR ALL TYPES OF FIND WE NEED TO USE REGULAR EXPRESSION THAT IS /^find/  IN PLACE OF FIND. OR WE CAN CREATE A NEW MIDDLEWARE SPECIFYING findById IN PLACE OF FIND WHICH IS NOT RECOMMENDED SOLUTION.
-  this.start = Date.now(); //~ New property is defined in Query Object.
+  // this.start = Date.now(); //~ New property is defined in Query Object.
   this.find({ secretTour: { $ne: true } });
   next();
 });
@@ -222,14 +222,14 @@ tourSchema.pre(/^find/, function (next) {
 });
 
 //@ Post query middleware -
-tourSchema.post(/^find/, function (docs, next) {
-  //~ docs - all the documents which satisfied the result.
-  console.log(
-    Date.now() - this.start,
-    'milliseconds was took to complete the task!'
-  );
-  next();
-});
+// tourSchema.post(/^find/, function (docs, next) {
+//   //~ docs - all the documents which satisfied the result.
+//   console.log(
+//     Date.now() - this.start,
+//     'milliseconds was took to complete the task!'
+//   );
+//   next();
+// });
 //! 3. Aggregation Middleware -> Used to hook before and after a aggregation is performed.
 //@ PRE AND POST AGGREGATION HOOKS -
 tourSchema.pre('aggregate', function (next) {

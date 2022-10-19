@@ -30,7 +30,7 @@ exports.uploadTourImages = upload.fields([
 // exports.uploadTourImages = upload.single('image'); --present in req.file
 
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
-  console.log(req.files);
+  // console.log(req.files);
   if (!req.files.imageCover || !req.files.images) return next();
 
   // 1) Cover image -
@@ -265,7 +265,7 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
     );
   //@ This radius obtained by dividing distance provided by earth's radius.
   const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
-  console.log(radius);
+  // console.log(radius);
   const tours = await Tour.find({
     startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
   });

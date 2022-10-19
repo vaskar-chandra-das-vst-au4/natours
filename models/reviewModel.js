@@ -59,7 +59,7 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
     },
   ]);
 
-  console.log(stats);
+  // console.log(stats);
 
   await Tour.findByIdAndUpdate(tourId, {
     ratingsQuantity: stats[0].nRating,
@@ -87,7 +87,7 @@ reviewSchema.pre(/^findOneAnd/, async function (next) {
   //this keyword points to current querry.
   //for findByIdAndUpdate and findByIdAndDelete
   this.r = await this.findOne(); //Executing the query to find the current review and then store it into r property defined on the query.
-  console.log(this.r); //Unaltered or not updated review document
+  // console.log(this.r); //Unaltered or not updated review document
   next();
 });
 reviewSchema.post(/^findOneAnd/, async function () {

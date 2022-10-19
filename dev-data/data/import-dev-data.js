@@ -53,7 +53,7 @@ const deleteData = async () => {
   process.exit();
 };
 // process.argv - It is an array containing location of node command and js file aslo it stores the value specified after node index.js .
-console.log(process.argv);
+// console.log(process.argv);
 
 if (process.argv[2] === '--import') importData();
 if (process.argv[2] === '--delete') deleteData();

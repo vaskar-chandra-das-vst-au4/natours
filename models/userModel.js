@@ -79,16 +79,16 @@ userSchema.pre('save', function (next) {
   //@ 1sec is substracted which means passwordChangedAt will be set 1sec earlier than the time at which actual password is changed.
   this.passwordChangedAt = Date.now() - 1000;
 
-  const locale = Intl.DateTimeFormat().resolvedOptions().locale;
-  console.log(
-    new Intl.DateTimeFormat(locale, {
-      month: '2-digit',
-      year: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(new Date(this.passwordChangedAt))
-  );
+  // const locale = Intl.DateTimeFormat().resolvedOptions().locale;
+  // console.log(
+  //   new Intl.DateTimeFormat(locale, {
+  //     month: '2-digit',
+  //     year: '2-digit',
+  //     day: '2-digit',
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //   }).format(new Date(this.passwordChangedAt))
+  // );
 
   next();
 });

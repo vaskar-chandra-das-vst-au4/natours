@@ -11,6 +11,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
+
 const globalErrorHanlder = require('./controllers/errorController');
 const AppError = require('./utilities/appError');
 const app = express();
@@ -115,6 +117,10 @@ app.use(
     ],
   })
 );
+
+//! Compress all Data such JSON and HTML code ->
+//@ This returns a midlleware function will in return compress all the requested text send to client but it will not going to compress images because they are already compressed.
+app.use(compression());
 
 //~ Test Middleware -
 // app.use((req, res, next) => {

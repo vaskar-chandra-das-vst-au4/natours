@@ -1,0 +1,48 @@
+doctype html 
+html 
+  head 
+    block head
+      meta(charset='UTF-8')
+      meta(name='viewport' content='width=device-width', initial-scale='1.0')
+      title Natours | #{title} Tour
+      link(href='https://fonts.googleapis.com/css?family=Lato:300,300i,700' rel='stylesheet')
+      link(rel='stylesheet', href='/css/style.css')
+      link(rel='shortcut icon', type='image/png' href='/img/favicon.png')
+     
+
+  body
+    // HEADER
+    include _header
+
+    // CONTENT EXTENDING
+    block content 
+      h1 This is a placeholder heading.
+
+    // FOOTER
+    include _footer
+
+    script(defer src='/js/bundle.js')
+
+
+
+//-! OLD CODES ->
+//- doctype html 
+//- html 
+//-  head 
+//-   title Natours | #{tour}
+//-   //- #{tour} - this way of writing code is called interpolation.
+//-   //- link(rel="stylesheet", href="css/style.css") This is regular css which is aslo supported in pug.
+//-   //- All the css and img files gets loaded because of static file route in app.js. For  each resource like img , css browser make a request to the server , as a response that static file route send back the response.
+//-   //- comments made using //- are not visible into render HTML file send to browser. but comments made using // are visible.
+//-   link(rel='stylesheet', href='css/style.css')
+//-   link(rel='shortcut icon', type='image/png' href='img/favicon.png')
+
+//-  body
+//-   //- this kind of code is called buffered code.
+//-   h1=tour 
+//-   // h1 The Park Camper 
+//-   h2=user.toUpperCase()
+//-   //- Unbuffered code - not add anything to the output. we write them using - 
+//-   - const x = 20;
+//-   h3= 56*x
+//-   p Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni, vitae.

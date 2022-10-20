@@ -15,7 +15,11 @@ const compression = require('compression');
 
 const globalErrorHanlder = require('./controllers/errorController');
 const AppError = require('./utilities/appError');
+
 const app = express();
+
+//@ Enable proxy
+app.enable('trust proxy');
 
 //@ PUG -
 app.set('view engine', 'pug');

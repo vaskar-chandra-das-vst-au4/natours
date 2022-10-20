@@ -21,21 +21,33 @@ const signToken = id => {
 ///////////////////////////////////////////////////////////////////////////
 
 //! SIGN WEB TOKEN AND SEND RESPONSE FUNCTION ->
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   //@ SENDING COOKIES ->
   //~ In cookieOptions secure:true means cookie will only be generated and send over https request not on http.
   //~ httpOnly:true means browser in only allowed to recieve and send cookies with each request other than that it cant modify it.
-  const cookieOptions = {
+
+  //! For production we no longer need to check for process.env.NODE_ENV === 'production' and then set cookieOptions.secure = true because this is not going to work on heroku as heroku modifies each incoming requests.
+  //! on req we have a secure property which is set to true if the connection is actually secure but on heroku this dosent work because heroku proxy modifies and redirects all incoming requests before they reach to our application
+  //! so in order to make this work we aslo need to check for req.header['x-forwarded-proto'] === 'https'
+  //@ we need to take req for this to work.
+  //@ aslo we need to make our application trust proxy by inserting a code in app.js - app.enable('trust proxy')
+  // const cookieOptions = {
+  //   expires: new Date(
+  //     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+  //   ),
+  //   httpOnly: true,
+  // };
+  // if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
+  res.cookie('jwt', token, {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-  };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-
-  res.cookie('jwt', token, cookieOptions);
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+  });
 
   user.password = undefined; //@ To delete hashed password field from response object.
 
@@ -82,7 +94,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   // });
 
   //~ OR---
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -112,7 +124,7 @@ exports.login = catchAsync(async (req, res, next) => {
   //   token,
   // });
 
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -343,7 +355,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   //   status: 'success',
   //   token,
   // });
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -361,7 +373,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
   //~ 4) Log user in and send JWT -
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 ///////////////////////////////////////////////////////////////////////////

@@ -16,6 +16,14 @@ const compression = require('compression');
 const globalErrorHanlder = require('./controllers/errorController');
 const AppError = require('./utilities/appError');
 
+//! CREATING AND MOUNTING MULTIPLE ROUTERS ->
+//@ IMPORTS - ROUTERS
+const viewRouter = require(`${__dirname}/routes/viewRoutes`);
+const tourRouter = require(`${__dirname}/routes/tourRoutes`);
+const userRouter = require(`${__dirname}/routes/userRoutes`);
+const bookingRouter = require(`${__dirname}/routes/bookingRoutes`);
+const reviewRouter = require(`${__dirname}/routes/reviewRoutes`);
+
 const app = express();
 
 //@ Enable proxy
@@ -47,16 +55,6 @@ app.set('views', path.join(__dirname, 'views'));
 //     user: 'Vaskar',
 //   });
 // });
-//@ Serve static files -
-app.use(express.static(path.join(__dirname, 'public')));
-
-//! CREATING AND MOUNTING MULTIPLE ROUTERS ->
-//@ IMPORTS - ROUTERS
-const viewRouter = require(`${__dirname}/routes/viewRoutes`);
-const tourRouter = require(`${__dirname}/routes/tourRoutes`);
-const userRouter = require(`${__dirname}/routes/userRoutes`);
-const bookingRouter = require(`${__dirname}/routes/bookingRoutes`);
-const reviewRouter = require(`${__dirname}/routes/reviewRoutes`);
 
 //! GLOBAL MIDDLEWARE ->
 
@@ -73,7 +71,8 @@ const reviewRouter = require(`${__dirname}/routes/reviewRoutes`);
 
 //~ Or we may allow only certain api url to be available to all for that we need to specify cors() middleware there.
 //@ Like app.use('/api/v1/tours', cors() , tourRouter);
-// app.use(cors());
+app.use(cors());
+app.options('*', cors());
 
 //! GET and POST are called simple requests which are now allowed using above code to other domains.
 
@@ -86,6 +85,9 @@ const reviewRouter = require(`${__dirname}/routes/reviewRoutes`);
 //~ and this app.options is just like other app.get or app.delete requests. "*" means for all non-simple requests route them to our api using cors().
 // app.options('*', cors());
 //@ For specific routes - app.options('/api/tour/:id', cors() )
+
+//! Serve static files -
+app.use(express.static(path.join(__dirname, 'public')));
 
 //~ Set security HTTP headers -
 //@ Helmet helps to secure Express apps by setting various HTTP headers.

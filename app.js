@@ -91,7 +91,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //~ Set security HTTP headers -
 //@ Helmet helps to secure Express apps by setting various HTTP headers.
 //@ It should be placed at the top of middleware stack so that it can set all the headers properly.
-app.use(helmet({ crossOriginEmbedderPolicy: true, originAgentCluster: true }));
+// app.use(helmet({ crossOriginEmbedderPolicy: true, originAgentCluster: true }));
 app.use(
   helmet.contentSecurityPolicy({
     useDefaults: true,

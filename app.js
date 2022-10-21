@@ -60,13 +60,36 @@ const reviewRouter = require(`${__dirname}/routes/reviewRoutes`);
 
 //! GLOBAL MIDDLEWARE ->
 
+//! CORS - Cross origin resourse sharing ->
+//@ Browsers block all the requests from different domain coming to our natours api for security purposes.
+//@ That means if we host our frontend and backend(api) parts on different domain then we cant make requests from frontend to our backend using axios or fetch functions.
+//@ For example our frontend is hosted on natours.com and backend on api.natours so all the requests made from frontend to api.natours will be blocked by the browser.
+
+//@ In this project we are hosting both frontend and backend parts on the same domain that is https://natours-vcdas.herokuapp.com/ that's why it is not a problem for our client app to communicate with the api. But we want our api to get utlised by others aslo so in this case we need to set some headers using cors npm package which will make our api to get consumed from any domain.
+
+//@ Access-Control-Allow-Origin set to "*" means for all requests.
+//~ This will allow any domain to communicate to our api. But may be sometimes we need to just allow some specific domain to access our api. So for that we have to specify origin property.
+//@ Like this app.use(cors({origin:'https://example.com/'}))
+
+//~ Or we may allow only certain api url to be available to all for that we need to specify cors() middleware there.
+//@ Like app.use('/api/v1/tours', cors() , tourRouter);
+app.use(cors());
+
+//! GET and POST are called simple requests which are now allowed using above code to other domains.
+
+//! PUT, PATCH and DELETE are Called non-simple requests, and cookie requests are still not allowed.
+//! These non-simple requests need so called preflight phase. So whenever there is a non-simple request the browser will automatically issue the preflight phase .
+
+//! That is before the real request actually happens let say delete request the browser first does a option request in order to figure out if the actual request is safe to send. So developers need to make our app to respond to this option request and option request is really just like other type of http requests.
+
+//! so basically when we get one of these option requests on our server we then need to send back the same access-control-allow-origin header . And this way browser will then know that the actual request and in this case a delete request is safe to perform and then execute the actual delete request.
+//~ and this app.options is just like other app.get or app.delete requests. "*" means for all non-simple requests route them to our api using cors().
+app.options('*', cors());
+//@ For specific routes - app.options('/api/tour/:id', cors() )
+
 //~ Set security HTTP headers -
 //@ Helmet helps to secure Express apps by setting various HTTP headers.
 //@ It should be placed at the top of middleware stack so that it can set all the headers properly.
-// Access-Control-Allow-Origin
-app.use(cors());
-
-app.options('*', cors());
 
 app.use(
   helmet.contentSecurityPolicy({

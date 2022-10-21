@@ -73,7 +73,7 @@ const reviewRouter = require(`${__dirname}/routes/reviewRoutes`);
 
 //~ Or we may allow only certain api url to be available to all for that we need to specify cors() middleware there.
 //@ Like app.use('/api/v1/tours', cors() , tourRouter);
-app.use(cors());
+// app.use(cors());
 
 //! GET and POST are called simple requests which are now allowed using above code to other domains.
 
@@ -84,7 +84,7 @@ app.use(cors());
 
 //! so basically when we get one of these option requests on our server we then need to send back the same access-control-allow-origin header . And this way browser will then know that the actual request and in this case a delete request is safe to perform and then execute the actual delete request.
 //~ and this app.options is just like other app.get or app.delete requests. "*" means for all non-simple requests route them to our api using cors().
-app.options('*', cors());
+// app.options('*', cors());
 //@ For specific routes - app.options('/api/tour/:id', cors() )
 
 //~ Set security HTTP headers -

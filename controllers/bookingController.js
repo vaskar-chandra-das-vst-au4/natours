@@ -1,9 +1,9 @@
 //! This stripe import only work on backend .. And this need stipe secret key.
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const Tour = require('./../models/tourModel');
-const User = require('./../models/userModel');
-const Booking = require('./../models/bookingModel');
-const catchAsync = require('./../utilities/catchAsync');
+const Tour = require('../models/tourModel');
+const User = require('../models/userModel');
+const Booking = require('../models/bookingModel');
+const catchAsync = require('../utilities/catchAsync');
 const factory = require('./handlerFactory');
 
 //! GET CHECKOUT SESSION ->
@@ -85,7 +85,7 @@ exports.webhookCheckout = (req, res, next) => {
     return res.status(400).send(`Webhook error : ${err.message}`);
   }
 
-  if (event === 'checkout.session.completed') {
+  if (event.type === 'checkout.session.completed') {
     createBookingCheckout(event.data.object);
     res.status(200).json({ received: true });
   }

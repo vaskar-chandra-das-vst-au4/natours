@@ -21,7 +21,7 @@ const router = express.Router();
 // /tours/${tour.slug} - url starting using slash are relative urls
 // router.use(isLoggedIn);
 
-router.get('/', createBookingCheckout, isLoggedIn, getOverview);
+// router.get('/', createBookingCheckout, isLoggedIn, getOverview);
 router.get('/login', isLoggedIn, getLoginForm);
 router.get('/signup', isLoggedIn, getSignupForm);
 router.get('/tour/:slug', isLoggedIn, getTour);

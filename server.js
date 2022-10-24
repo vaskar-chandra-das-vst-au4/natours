@@ -1,6 +1,7 @@
 //! Imports ->
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+
 //! Uncaught Exceptions - Errors which are occured due to synchronous code
 //@ Catching uncaught exceptions ->Must be at top before any other code even before our modules.
 process.on('uncaughtException', err => {
@@ -8,6 +9,7 @@ process.on('uncaughtException', err => {
   console.log(err.name, err.message);
   process.exit(1);
 });
+
 dotenv.config({ path: './config.env' });
 
 const app = require('./app');
@@ -16,6 +18,7 @@ const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
+
 //! Connect method returns a promise so we need to handle that using then method.
 mongoose
   .connect(DB, {

@@ -1,6 +1,7 @@
 //! This stripe import only work on backend .. And this need stipe secret key.
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Tour = require('./../models/tourModel');
+const User = require('./../models/userModel');
 const Booking = require('./../models/bookingModel');
 const AppError = require('./../utilities/appError');
 const catchAsync = require('./../utilities/catchAsync');
@@ -16,22 +17,27 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     mode: 'payment',
-    success_url: `${req.protocol}://${req.get('host')}/?tour=${
-      req.params.tourId
-    }&user=${req.user.id}&price=${tour.price}`,
+    // success_url: `${req.protocol}://${req.get('host')}/?tour=${
+    //   req.params.tourId
+    // }&user=${req.user.id}&price=${tour.price}`,
+    success_url: `${req.protocol}://${req.get('host')}/my-tours`,
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
     customer_email: req.user.email,
     client_reference_id: req.params.tourId,
     line_items: [
       {
         price_data: {
-          currency: 'usd',
+          currency: 'inr',
+          unit_amount: tour.price * 100,
           product_data: {
             name: `${tour.name} Tour`,
             description: tour.summary,
-            images: [`https://www.natours.dev/img/tours/${tour.imageCover}`],
+            images: [
+              `${req.protocol}://${req.get('host')}/img/tours/${
+                tour.imageCover
+              }`,
+            ],
           },
-          unit_amount: tour.price * 100,
         },
         quantity: 1,
       },
@@ -46,14 +52,45 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 });
 
 //! CREATE BOOKING CHECKOUT ->
-exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-  // This is temporary because if anyone know about the query string then can easily create bookings without paying.
-  const { tour, user, price } = req.query;
-  if (!tour && !user && !price) return next();
+// exports.createBookingCheckout = catchAsync(async (req, res, next) => {
+//   // This is temporary because if anyone know about the query string then can easily create bookings without paying.
+//   const { tour, user, price } = req.query;
+//   if (!tour && !user && !price) return next();
 
+//   await Booking.create({ tour, user, price });
+//   res.redirect(req.originalUrl.split('?')[0]);
+// });
+
+//@ All of this code will run whenever the payment was successful and stipe will then call our webhok which is the URL which is going to call this middleware function and so this function recieves a body from the request and then together with the signature and webhook secret creates an event which will contain the session and then using that session data we can create our new booking into our database.
+const createBookingCheckout = async session => {
+  const tour = session.client_reference_id;
+  const user = (await User.findOne({ email: session.customer_email })).id;
+  const price = session.amount_total / 100;
   await Booking.create({ tour, user, price });
-  res.redirect(req.originalUrl.split('?')[0]);
-});
+};
+
+exports.webhookCheckout = (req, res, next) => {
+  //1) Read stripe signature out of the req.header
+  //When stripe call our webhook it will add a stripe signature in the header.
+  const signature = req.headers['stripe-signature'];
+
+  //2) Create Stripe Event
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    return res.status(400).send(`Webhook error : ${err.message}`);
+  }
+
+  if (event === 'checkout.session.completed') {
+    createBookingCheckout(event.data.object);
+    res.status(200).json({ received: true });
+  }
+};
 
 //! CRUD OPERATIONS ->
 exports.createBooking = factory.createOne(Booking);

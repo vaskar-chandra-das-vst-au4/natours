@@ -22,6 +22,7 @@ const viewRouter = require(`${__dirname}/routes/viewRoutes`);
 const tourRouter = require(`${__dirname}/routes/tourRoutes`);
 const userRouter = require(`${__dirname}/routes/userRoutes`);
 const bookingRouter = require(`${__dirname}/routes/bookingRoutes`);
+const webhookCheckout = require(`${__dirname}/controllers/bookingController`);
 const reviewRouter = require(`${__dirname}/routes/reviewRoutes`);
 
 const app = express();
@@ -103,7 +104,7 @@ app.use(
         'https://*.cloudflare.com',
         'https://js.stripe.com/v3/',
       ],
-      // connectSrc: ["'self'", 'blob:'],
+      // connectSrc: ["'self'", "blob:"],
     },
   })
 );
@@ -113,6 +114,24 @@ console.log(`App is in ${process.env.NODE_ENV}.`);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+//~ EXPRESS RATE LIMIT -
+//@ This will help to prevent Denial of service and brute force attack.
+//@ https://www.npmjs.com/package/express-rate-limit
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000, //1hr in miliseconds ..windowMs represent time after which again req can be made by the same ip.
+  message: 'Too many requests from this IP, please try again in an hour!',
+});
+app.use('/api', limiter);
+
+//! Stripe Webhooks -
+//@ This we need to put before body parser . Because when we will recieve a body in the webhookChecout handler function from stripe , the stripe function that we are gonna use to actually read the body needs this body in the raw form so basically as a string and not as JSON. That is in this handler the body must not be in JSON.
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  webhookCheckout
+);
 
 //! Body parser - use to read data from req.body -
 //@ Only allow to pass 10kb of data in req.body.
@@ -156,15 +175,6 @@ app.use(compression());
 //   console.log(req.cookies);
 //   next();
 // });
-//~ EXPRESS RATE LIMIT -
-//@ This will help to prevent Denial of service and brute force attack.
-//@ https://www.npmjs.com/package/express-rate-limit
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000, //1hr in miliseconds ..windowMs represent time after which again req can be made by the same ip.
-  message: 'Too many requests from this IP, please try again in an hour!',
-});
-app.use('/api', limiter);
 
 //@ Mounting Routers -> Mounting must be done after all declarations and Routes.
 app.use('/', viewRouter);

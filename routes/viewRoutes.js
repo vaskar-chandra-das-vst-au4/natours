@@ -7,6 +7,7 @@ const {
   getAccount,
   updateUserData,
   getMyTours,
+  alerts,
 } = require('../controllers/viewController');
 
 // const { createBookingCheckout } = require('../controllers/bookingController');

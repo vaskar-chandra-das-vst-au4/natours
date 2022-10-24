@@ -9,7 +9,7 @@ const {
   getMyTours,
 } = require('../controllers/viewController');
 
-const { createBookingCheckout } = require('../controllers/bookingController');
+// const { createBookingCheckout } = require('../controllers/bookingController');
 
 const {
   isLoggedIn,

@@ -3,7 +3,6 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Tour = require('./../models/tourModel');
 const User = require('./../models/userModel');
 const Booking = require('./../models/bookingModel');
-const AppError = require('./../utilities/appError');
 const catchAsync = require('./../utilities/catchAsync');
 const factory = require('./handlerFactory');
 

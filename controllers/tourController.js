@@ -3,10 +3,10 @@
 //! Imports
 const multer = require('multer');
 const sharp = require('sharp');
-const Tour = require('./../models/tourModel');
-// const APIFeatures = require('./../utilities/apiFeatures');
-const AppError = require('./../utilities/appError');
-const catchAsync = require('./../utilities/catchAsync');
+const Tour = require('../models/tourModel');
+// const APIFeatures = require('../utilities/apiFeatures');
+const AppError = require('../utilities/appError');
+const catchAsync = require('../utilities/catchAsync');
 const factory = require('./handlerFactory');
 
 //! TOUR IMAGE UPLOADS ->

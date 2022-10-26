@@ -3,10 +3,10 @@ const crypto = require('crypto');
 // const bcrypt = require('bcryptjs');
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
-const User = require('./../models/userModel');
-const catchAsync = require('./../utilities/catchAsync');
-const AppError = require('./../utilities/appError');
-const Email = require('./../utilities/email');
+const User = require('../models/userModel');
+const catchAsync = require('../utilities/catchAsync');
+const AppError = require('../utilities/appError');
+const Email = require('../utilities/email');
 
 ///////////////////////////////////////////////////////////////////////////
 

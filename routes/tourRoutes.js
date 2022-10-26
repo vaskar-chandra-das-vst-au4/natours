@@ -15,12 +15,12 @@ const {
   getDistances,
   uploadTourImages,
   resizeTourImages,
-} = require('./../controllers/tourController');
+} = require('../controllers/tourController');
 
 const {
   protect,
   restrictTo,
-} = require('./../controllers/authenticationController');
+} = require('../controllers/authenticationController');
 
 // const { createReview } = require('./../controllers/reviewController');
 const reviewRouter = require('./reviewRoutes');

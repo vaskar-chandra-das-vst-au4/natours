@@ -13,7 +13,7 @@ const {
   getMe,
   uploadUserPhoto,
   resizeUserPhoto,
-} = require('./../controllers/userController');
+} = require('../controllers/userController');
 
 const {
   signup,
@@ -24,7 +24,7 @@ const {
   resetPassword,
   updatePassword,
   restrictTo,
-} = require('./../controllers/authenticationController');
+} = require('../controllers/authenticationController');
 
 //! Handling file uploads ->
 // const upload = multer({ dest: 'public/img/users' });

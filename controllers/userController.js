@@ -1,9 +1,9 @@
 //! MODULES - Handlers Functions/Controllers FOR USERS ->
 const multer = require('multer');
 const sharp = require('sharp');
-const User = require('./../models/userModel');
-const catchAsync = require('./../utilities/catchAsync');
-const AppError = require('./../utilities/appError');
+const User = require('../models/userModel');
+const catchAsync = require('../utilities/catchAsync');
+const AppError = require('../utilities/appError');
 const factory = require('./handlerFactory');
 
 //! UPLOAD USER PHOTO ->

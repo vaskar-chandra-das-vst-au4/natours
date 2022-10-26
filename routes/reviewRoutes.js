@@ -7,12 +7,12 @@ const {
   updateReview,
   setTourAndUserId,
   getReview,
-} = require('./../controllers/reviewController');
+} = require('../controllers/reviewController');
 
 const {
   protect,
   restrictTo,
-} = require('./../controllers/authenticationController');
+} = require('../controllers/authenticationController');
 
 //! Since to create new review from tour Route we need access of tourId from this /:tourId/reviews . For that we need to merge parameter of both tour and review routes like this. By default a route have only access of its own parameter.
 const router = express.Router({ mergeParams: true });

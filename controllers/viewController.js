@@ -1,8 +1,8 @@
 const AppError = require('../utilities/appError');
-const Tour = require('./../models/tourModel');
-const Booking = require('./../models/bookingModel');
-const User = require('./../models/userModel');
-const catchAsync = require('./../utilities/catchAsync');
+const Tour = require('../models/tourModel');
+const Booking = require('../models/bookingModel');
+const User = require('../models/userModel');
+const catchAsync = require('../utilities/catchAsync');
 
 // router.get('/', (req, res) => {
 //   res.status(200).render('base', {

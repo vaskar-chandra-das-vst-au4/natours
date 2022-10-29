@@ -48,7 +48,7 @@ const multerFilter = (req, file, cb) => {
   else cb(new AppError('Not an image! Please upload only images.', 400), false);
 };
 
-// const upload = multer({ dest: 'public/img/users' });
+// const upload = multer({ dest: 'public/img/users' }); // This needed if we want to directly store images to disk.
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 exports.uploadUserPhoto = upload.single('photo');
 
@@ -60,6 +60,7 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
+    // Finally store image to the disk
     .toFile(`public/img/users/${req.file.filename}`);
 
   next();

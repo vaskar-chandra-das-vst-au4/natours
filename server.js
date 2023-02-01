@@ -36,7 +36,7 @@ mongoose
 //! START Server ->
 const port = process.env.PORT;
 const server = app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
+  console.log(`App running on port ${port}👻...`);
 });
 
 //@ Unhandled rejections -> Handling Rejected Promises Globally

@@ -5,7 +5,6 @@ const express = require('express');
 const {
   getAllUsers,
   getUser,
-  createUser,
   updateUser,
   deleteUser,
   updateMe,
@@ -51,7 +50,7 @@ router.delete('/deleteMe', deleteMe);
 router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe);
 
 router.use(restrictTo('admin'));
-router.route('/').get(getAllUsers).post(createUser);
+router.route('/').get(getAllUsers);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 module.exports = router;

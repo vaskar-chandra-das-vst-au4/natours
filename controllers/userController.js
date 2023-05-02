@@ -124,12 +124,12 @@ exports.getMe = (req, res, next) => {
 };
 
 //! CREATE USER - NOT DEFINED ->
-exports.createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not defined! Please use /signup instead',
-  });
-};
+// exports.createUser = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'This route is not defined! Please use /signup instead',
+//   });
+// };
 
 //! ALL DEFINED ROUTE CONTROLLERS ->
 exports.getAllUsers = factory.getAll(User);

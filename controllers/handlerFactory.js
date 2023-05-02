@@ -43,7 +43,10 @@ exports.getOne = (Model, popOptions) =>
     const doc = await query;
 
     if (!doc) return next(new AppError('No Document Found with that ID!', 404));
-
+    console.log(req);
+    console.log(req.query);
+    console.log(req.params);
+    console.log(req.originalUrl);
     res.status(200).json({
       status: 'success',
       data: {

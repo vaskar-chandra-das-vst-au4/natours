@@ -168,7 +168,7 @@ tourSchema.pre('save', function (next) {
 
   // console.log(this); //this keyword here is the current document which is gonna saved.
   this.slug = slugify(this.name, { lower: true });
-  // console.log(this); //this keyword here is the processed document.
+  // console.log(this); //this keyword here is the unprocessed document.
   next();
 });
 // tourSchema.post('save', function (doc, next) {

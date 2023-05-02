@@ -46,7 +46,7 @@ process.on('unhandledRejection', err => {
   console.log(err.name, err.message);
   //@ If app unable to connect to database then we can do nothing other than shutting down our app using process.exit()
   // process.exit(0) //Stands for Success
-  // process.exit(1) //stands for uncaught exception //Shutting the app like this is a very abrupt way of closing the app because by doing this we are immediately shutting the application as a result it will abort immediately all the requests which are still running or pending which is not good . SO WE MUST SHUT DOWN THE SERVER FIRST AND THEN ONCE IT DONE SERVER HAS TO SHUT DOWN.
+  // process.exit(1) //stands for uncaught exception //Shutting the app like this is a very abrupt way of closing the app because by doing this we are immediately shutting the application as a result it will abort immediately all the requests which are still running or pending which is not good . SO WE MUST SHUT DOWN THE SERVER FIRST.
   server.close(() => process.exit(1));
 });
 

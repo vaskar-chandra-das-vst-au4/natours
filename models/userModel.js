@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
 //! HASH PASSWORD ->
 //@ Run on each save request Only will not work for findByIdAndUpdate and other methods.
 userSchema.pre('save', async function (next) {
-  //~ If password is not modefied then hashing will not be done ->
+  //~ If password is not modified then hashing will not be done ->
   if (!this.isModified('password')) return next();
   //~ Password will be hashed if it is modified
   //@ Hash method returns a promise.2nd parameter its take called cost parameter, higher the cost basically the more cpu intensive the proccess will be and the better the password will be encrypted.Default cost is 10 it is better to use 12 for better password encryption. This hash is the asynchronous version.
@@ -100,9 +100,9 @@ userSchema.pre(/^find/, function (next) {
 });
 
 //~ INSTANCE METHODS ->
-//@ Method which is avilable on all the documents of a certain collection
+//@ Method which is avilable on all the DOCUMENTS of a certain collection
 //@ This is like declaring methods in the prototype of an Objects made using a Constructor Class.
-//@ This keyword points toward the current document.
+//@ This keyword points toward the current document that is the document on which the instance method will be called.
 
 //! CHECK PASSWORD ->
 userSchema.methods.correctPassword = async function (
